@@ -1,6 +1,28 @@
-# Animation Load Progress
-## usage
-```
+import 'package:animation_load_progress/animation_load_progress.dart';
+import 'package:flutter/material.dart';
+
+String arabic = 'ar';
+String indonesia = 'id';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+            floatingActionButtonTheme: FloatingActionButtonThemeData(
+                backgroundColor: Colors.blue.shade800),
+            colorScheme: ColorScheme.light(primary: Colors.blue.shade800)),
+        home: const HomeView());
+  }
+}
+
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
@@ -52,4 +74,3 @@ class _HomeViewState extends State<HomeView> {
         ));
   }
 }
-```

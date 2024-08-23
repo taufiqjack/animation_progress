@@ -1,53 +1,63 @@
 library animation_load_progress;
 
+import 'package:animation_load_progress/curved_progress.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 
 class AnimationLoadProgress extends StatelessWidget {
   final bool inAsyncCall;
   final double opacity;
   final Color color;
+  final Color colorProgress;
+  final Offset? offset;
   final bool dismissible;
   final Widget child;
-  final double height;
-  final double width;
-  final List<Color> colorList;
 
   const AnimationLoadProgress({
-    Key? key,
+    super.key,
     required this.inAsyncCall,
-    this.opacity = 0.3,
+    this.opacity = 0.5,
     this.color = Colors.grey,
+    this.offset,
     this.dismissible = false,
     required this.child,
-    required this.height,
-    required this.width,
-    required this.colorList,
-  })  : assert(child != null),
-        assert(inAsyncCall != null),
-        super(key: key);
+    required this.colorProgress,
+  });
 
   @override
   Widget build(BuildContext context) {
     if (!inAsyncCall) return child;
+
     Widget layOutProgressIndicator;
-    layOutProgressIndicator = Center(
-      child: SizedBox(
-        height: height,
-        width: width,
-        child: LoadingIndicator(
-          indicatorType: Indicator.ballRotateChase,
-          colors: colorList,
-          strokeWidth: 2,
+    if (offset == null) {
+      layOutProgressIndicator = Center(
+        child: CurvedCircularProgressIndicator(
+          animationDuration: const Duration(seconds: 2),
+          backgroundColor: Colors.white,
+          color: colorProgress,
+          strokeWidth: 8,
         ),
-      ),
-    );
+      );
+    } else {
+      layOutProgressIndicator = Positioned(
+        left: offset?.dx,
+        top: offset?.dy,
+        child: Center(
+          child: CurvedCircularProgressIndicator(
+            animationDuration: const Duration(seconds: 2),
+            backgroundColor: Colors.white,
+            color: colorProgress,
+            strokeWidth: 8,
+          ),
+        ),
+      );
+    }
+
     return Stack(
       children: [
         child,
         Opacity(
-          child: ModalBarrier(dismissible: dismissible, color: color),
           opacity: opacity,
+          child: ModalBarrier(dismissible: dismissible, color: color),
         ),
         layOutProgressIndicator,
       ],
